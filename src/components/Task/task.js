@@ -18,6 +18,7 @@ const task = (props) => {
             <hr/>
         </div>
     });
+
     let workingButtonClasses = "btn-circle fa btn-success fa-play";
     if (props.task.activeTimer) {
         workingButtonClasses = "btn-circle fa btn-danger fa-stop";

@@ -15,11 +15,7 @@ class App extends Component {
 
     constructor(props) {
         super(props);
-
-
-
         this.state = {
-
             tasks: getTasks()
         };
     }
@@ -30,23 +26,17 @@ class App extends Component {
                 <h1>{this.props.title}</h1>
 
                 <div className="row">
-
                     <div className="col-md-12">
                         <TaskEditor onNewTask={this.onNewTask}/>
                         <hr/>
                     </div>
-
-                    <TaskList tasks={this.state.tasks}
-                              startStop={this.startWorkHandler}/>
-
+                    <TaskList tasks={this.state.tasks} startStop={this.startWorkHandler}/>
                 </div>
             </div>
         );
     }
 
-
     componentWillUnmount = () => {
-
         console.log('unmount');
 
         this.state.tasks.forEach((t => {
@@ -55,76 +45,68 @@ class App extends Component {
             }
         }));
 
-
-            };
-
-
-
-                        onNewTask = (task) => {
-                            console.log('[App.js] On new task');
-                            this.setState((state, props) => {
-                                return {
-                                    tasks: [...state.tasks, task]
-                                };
-                            });
-                        };
-
-
-                                    startWorkHandler = (index) => {
-                                        console.log('[App.js] startWorkingHandler for index: ', index);
-
-
-                                        this.setState((state, props) => {
-                                            const newTasksArrayRef = cloneTasks(state, index);
-                                            const task = newTasksArrayRef[index];
-
-                                            if (task.activeTimer) {
-                                                console.log('There is timer that is already started!');
-                                                // this call is obsolete. We are already in the setState method
-                                                // this.setState((state, props) => {
+    };
 
 
 
-
-                                                const startedActivity = task.activity[task.activity.length - 1];
-                                                startedActivity.to = Moment().format(timeOnlyFormat);
-
-                                                // stop timer
-                                                clearInterval(task.activeTimer);
-                                                delete task.activeTimer;
-                                            } else {
-                                                task.activity.push({
-                                                    date: Moment().format(dateOnlyFormat),
-                                                    from: Moment().format(timeOnlyFormat),
-                                                    to: null
-                                                });
+  onNewTask = (task) => {
+      console.log('[App.js] On new task');
+      this.setState((state, props) => {
+      return {
+        tasks: [...state.tasks, task]
+      };
+    });
+ };
 
 
-                                                task.activeTimer = setInterval(() => {
-                                                    this.setState((state, props) => {
-                                                        const tasksInInterval = cloneTasks(state, index);
-                                                        const taskInInterval = tasksInInterval[index];
+ startWorkHandler = (index) => {
+   console.log('[App.js] startWorkingHandler for index: ', index);
+
+   this.setState((state, props) => {
+            const newTasksArrayRef = cloneTasks(state, index);
+            const task = newTasksArrayRef[index];
+
+     if (task.activeTimer) {
+              console.log('There is timer that is already started!');
+                    // this call is obsolete. We are already in the setState method
+                  // this.setState((state, props) => {
+              const startedActivity = task.activity[task.activity.length - 1];
+              startedActivity.to = Moment().format(timeOnlyFormat);
+
+               // stop timer
+              clearInterval(task.activeTimer);
+              delete task.activeTimer;
+              }
+      else {
+
+               task.activity.push({
+               date: Moment().format(dateOnlyFormat),
+               from: Moment().format(timeOnlyFormat),
+                to: null
+               });
 
 
-                                                    updateTaskDuration(taskInInterval);
+                task.activeTimer = setInterval(() => {
+                this.setState((state, props) => {
+                    const tasksInInterval = cloneTasks(state, index);
+                    const taskInInterval = tasksInInterval[index];
+                    updateTaskDuration(taskInInterval);
 
-                                                    // stop timer
+                      // stop timer
+                      return {tasks: tasksInInterval};
+                  });
 
-                                                        return {tasks: tasksInInterval};
-                                                });
+                 }, 1000);
 
-
-
-                                            }, 1000);
-                                            }
-
-
-                                                return {tasks: newTasksArrayRef};
-                                                });
+      }
 
 
-                                            };
+       return {tasks: newTasksArrayRef};
+                                       });
 
-                            }
 
-  export default App;
+        };
+
+}
+
+export default App;

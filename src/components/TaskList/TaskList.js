@@ -10,7 +10,7 @@ class TaskList extends Component {
         super(props);
         this.state = {
             pageNum: 0,
-            pageSize: 2
+            pageSize: 3
         }
     }
 
@@ -41,6 +41,7 @@ class TaskList extends Component {
             </div>
         );
     }
+
     handlePageClick = (data) => {
         let selected = data.selected;
 
@@ -51,10 +52,7 @@ class TaskList extends Component {
     getTasksPage = (offset, nextPageOffset) => {
         return this.props.tasks
             .map((task, index) => {
-                return <Task task={task}
-                             key={index}
-                             startWork={this.props.startStop}
-                             index={index}/>
+                return <Task task={task} key={index} startWork={this.props.startStop} index={index}/>
             })
             // the filter is after the map function, so that the index attribute in map function is not reset for each page
             .filter((task, index) => {
