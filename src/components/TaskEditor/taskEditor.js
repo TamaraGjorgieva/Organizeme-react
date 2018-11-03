@@ -4,25 +4,53 @@
 import React from 'react';
 
 const taskEditor = (props) => {
+   const onFormSubmit = (formSubmitEvent) => {
+        formSubmitEvent.preventDefault();
+        console.log('onFormSubmit', formSubmitEvent);
+
+        props.onNewTask(
+            {
+                title: formSubmitEvent.target.taskName.value,
+                done: false,
+                project: {
+                    id: 1,
+                    name: formSubmitEvent.target.projectName.value,
+                    client: {
+                        id: 1,
+                        name: 'FINKI'
+                    }
+                },
+                totalTime: '00:00:00',
+                activity: []
+            }
+        );
+    };
+
     return (
-        <div className="row">
-            <div className="float-left">
-                <input type="input" className="form-control" value="The task title that can be longer"/>
-            </div>
-            <div className="float-left">
-                <button className="btn-circle btn-success fa fa-folder" title="Select project"> </button>
-            </div>
-            <div className="float-right"
-                 style={{width: '200px'}}>
-                No time logged for now
-            </div>
-            <div className="float-right">
-                <button className="btn-circle btn-success fa fa-play" title="Start working"> </button>
+        <form onSubmit={onFormSubmit}>
+            <div className="row">
+                <div className="col-md-7">
+                    <input name="taskName"
+                           placeholder={"Enter the name of the task..."} type={"text"}
+                           className="form-control"/>
+                </div>
+                <div className="col-md-3">
+                    <select name="projectName" className="form-control">
+                        <option value="Project 1">Project 1</option>
+                        <option value="Project 2">Project 2</option>
+                        <option value="Project 3">Project 3</option>
+                    </select>
+                </div>
+                <div className="col-md-2 ">
 
-                <button className="btn-circle btn-success fa fa-plus" title="Just create the task"> </button>
-            </div>
-        </div>
+                    <button type="submit"
+                            className="btn btn-outline-success">
+                        Create
+                    </button>
 
+                </div>
+            </div>
+        </form>
     );
 };
 
